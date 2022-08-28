@@ -40,7 +40,7 @@ const BackButton = styled(Button)({
 })
 
 
-mapboxgl.accessToken = 'pk.eyJ1IjoibWFuZXZpc2h3YWplZXQxIiwiYSI6ImNsN2NrYnJiZzB0bWkzb254eG9nMjc4ZWkifQ.62_f1MIY7KL8MXJTyZUGkw';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX;
 
 class LocalView extends Component{
     constructor(props){
