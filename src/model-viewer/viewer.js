@@ -14,6 +14,7 @@ import { IFCLoader } from "web-ifc-three/IFCLoader";
 import { CSS2DObject, CSS2DRenderer } from "three/examples/jsm/renderers/CSS2DRenderer"
 
 import mapboxgl from 'mapbox-gl'; 
+
 import moment from "moment";
 import { useNavigate } from 'react-router-dom';
 import './viewer.css';
