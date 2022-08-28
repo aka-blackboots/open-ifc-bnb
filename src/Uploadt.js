@@ -62,6 +62,16 @@ const Uploadt = () => {
     });
 
 
+    const [fileBigSnackbar, setOpenFileBigSnackbar] = useState(false);
+    const handleFileBigClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenFileBigSnackbar(false);
+    };
+
+
     const [snackbarOpen, setOpenSnackbar] = useState(false);
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -81,6 +91,7 @@ const Uploadt = () => {
         event.preventDefault();
 
         const file = event.target.file.value;
+        console.log(event.target.file.files[0].size);
 
         var formdata = new FormData();
         formdata.append("fileData", event.target.file.files[0], file);
@@ -96,7 +107,7 @@ const Uploadt = () => {
         redirect: 'follow'
         };
 
-        fetch("http://localhost:9000/uploadS3", requestOptions)
+        fetch("https://mongo-3d.herokuapp.com/uploadS3", requestOptions)
         .then(response => response)
         .then(result => {
             console.log(result);
@@ -111,6 +122,11 @@ const Uploadt = () => {
                 setUploadDialog(false);
 
                 setOpenSnackbar(true);
+            }
+
+            if(result.status === 410 ){
+                setUploadDialog(false);
+                setOpenFileBigSnackbar(true)
             }
         })
         .catch(error => console.log('error', error));
@@ -129,10 +145,11 @@ const Uploadt = () => {
                         id="caption" 
                         name="caption"
                         type="text"
-                        label="Property Name" 
+                        label="Property Name | Max 15 Characters" 
                         variant="outlined"
                         required
                         fullWidth
+                        inputProps={{ maxLength: 15 }}
                     />
 
                     <CaptionTextField 
@@ -143,6 +160,7 @@ const Uploadt = () => {
                         variant="outlined"
                         required
                         fullWidth
+                        inputProps={{ maxLength: 15 }}
                     />
 
 
@@ -185,6 +203,7 @@ const Uploadt = () => {
                         variant="outlined"
                         required
                         fullWidth
+                        inputProps={{ maxLength: 20 }}
                     />
                 
                     <Button 
@@ -202,6 +221,12 @@ const Uploadt = () => {
             <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
                 Please upload 3D files!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={fileBigSnackbar} autoHideDuration={6000} onClose={handleFileBigClose}>
+                <Alert onClose={handleFileBigClose} severity="error" sx={{ width: '100%' }}>
+                Max file size 30mb!
                 </Alert>
             </Snackbar>
 

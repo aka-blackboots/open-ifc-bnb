@@ -18,6 +18,68 @@ html, body {
 }
 
 
-.map-container {
-    height: 400px;
+#map{
+    position: absolute; 
+    top: 0; 
+    bottom: 0; 
+    width: 100%;
 }
+
+.label {
+    color: #FFF;
+    font-family: sans-serif;
+    padding: 2px;
+    background: rgba( 0, 0, 0, .6 );
+}
+
+
+.viewer-card-listing-header{
+    padding: 8px;
+    background: #FFF;
+    height: fit-content;
+    left: 20px;
+    bottom: 20px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    position: absolute;
+    width: 25%;
+}
+.viewer-card-listing-caption{
+    font-size: 1.8rem;
+    color: #00A699;
+    font-weight: 600;
+    margin: 0px 4px;
+}
+.viewer-card-listing-location{
+    font-size: 1.2rem;
+    color: #FF5A5F;
+    font-weight: 600;
+    margin: 0px 4px;
+}
+.viewer-card-listing-added-date{
+    font-size: 0.95rem;
+    color: #484848;
+    font-weight: 400;
+    margin: 6px 4px;
+    
+}
+.viewer-card-listing-person-name{
+    font-size: 0.9rem;
+    color: white;
+    font-weight: 400;
+    padding: 8px 12px;
+    background: #484848;
+    border-radius: 12px;
+    margin-top: 18px;
+}
+
+
+
+.viewer-card-listing-properties{
+    padding: 8px;
+    background: #FFF;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    height: 60%;
+}
+
