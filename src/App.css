@@ -36,3 +36,119 @@
     transform: rotate(360deg);
   }
 }
+
+
+body{
+  font-family: 'Poppins', sans-serif;
+  background: rgb(243, 243, 243);
+}
+
+.main-container{
+  padding: 6rem;
+  overflow-y: auto;
+}
+
+.main-header{
+  margin-bottom: 4rem;
+}
+
+.main-header-title{
+  font-size: 3.4rem;
+  color: #00A699;
+  font-weight: 600;
+}
+
+.main-header-subtitle{
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #484848;
+}
+
+
+
+
+
+
+.main-listing-region{
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-wrap: wrap;
+}
+
+.listing-card{
+  margin: 1.2rem;
+  width: 320px;
+  height: fit-content;
+  border-radius: 16px;
+  position: relative;
+  padding: 12px;
+  background: white;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.listing-card a{
+  text-decoration: none;
+}
+
+.listing-card:hover{
+  box-shadow: -1px 0px 24px -14px rgba(0,0,0,0.75);
+}
+
+.listing-card-img-container{
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+.listing-card-img{
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  border-radius: 12px;
+}
+
+.listing-card-location{
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #484848;
+  font-size: 0.95rem;
+  font-weight: 400;
+  text-decoration: none;
+  padding: 4px 10px;
+  background: white;
+  border-radius: 8px;
+}
+
+.listing-card-img-div-overlay{
+  padding: 10px;
+}
+
+.listing-card-ppname{
+  color: #484848;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 4px;
+}
+.list-card-footer{
+  margin-top: 6px;
+}
+.listing-card-pname{
+  color: #484848;
+  font-size: 0.96rem;
+  font-weight: 400;
+}
+.listing-card-date{
+  color: #484848;
+  font-size: 0.96rem;
+  font-weight: 400;
+}
+
+
+
+
+

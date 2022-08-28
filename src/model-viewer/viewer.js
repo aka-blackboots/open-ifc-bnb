@@ -26,8 +26,9 @@ class LocalView extends Component{
         const container = document.getElementById('viewer-container');
         const viewer = new IfcViewerAPI({ container, backgroundColor: new Color(0xffffff) }); 
         
-        viewer.grid.setGrid();
-        viewer.axes.setAxes();
+        //viewer.grid.setGrid();
+        //viewer.axes.setAxes();
+        
         this.viewer = viewer;
         
         //console.log(window.location.origin);
@@ -62,11 +63,13 @@ class LocalView extends Component{
 
     async loadIfc(url) {
 		// Load the model
+
         const model = await this.viewer.IFC.loadIfcUrl(url);
 
         // Add dropped shadow and post-processing efect
         await this.viewer.shadowDropper.renderShadow(model.modelID);
-        this.viewer.context.renderer.postProduction.active = true;
+        this.viewer.context.renderer.postProduction.active = false;
+        
     }
 
     getFileDataUsingAPI(){
