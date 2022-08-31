@@ -137,7 +137,7 @@ class LocalView extends Component{
         
         i++;
 
-
+        
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/manevishwajeet1/cl7d89k8r000514pchd2e1haw',
@@ -355,211 +355,15 @@ class LocalView extends Component{
 
     
     render(){
-        const setScaleX = (event) => {
-            this.setState({
-                scaleX: event.target.value
-            });
-            document.getElementById("scaleY-input").value = event.target.value;
-            document.getElementById("scaleZ-input").value = event.target.value;
-        }
-
-        const setTranslateX = (event) => {
-            this.setState({
-                translationX: event.target.value
-            });
-            document.getElementById("transalateX-input").value = event.target.value;
-        }
-        const setTranslateZ = (event) => {
-            this.setState({
-                translationZ: event.target.value
-            });
-            document.getElementById("transalateZ-input").value = event.target.value;
-        }
-        const setRotationY = (event) => {
-            this.setState({
-                rotationY: event.target.value
-            });
-            document.getElementById("rotationY-input").value = event.target.value;
-        }
-
         return (
             <>
                 <div id="viewer-container"></div>
                 <div id="map"></div>
 
-                {/* * Other UI * */}
                 <div className="viewer-card-listing-main">
                     <div className="viewer-card-listing-header">
-                        <h3 className="viewer-card-listing-caption">{this.state.caption}</h3>
-                        <h3 className="viewer-card-listing-location">{this.state.location}</h3>
-                        <h3 className="viewer-card-listing-added-date">Added on {moment(new Date(this.state.addedDate)).format("MMMM D, YYYY")}</h3>
-                        <h3 className="viewer-card-listing-person-name">by {this.state.personName}</h3>
+                        <h3 className="viewer-card-listing-person-name-onlyviewer">Created by {this.state.personName}</h3>
                     </div>
-                </div>
-
-
-                <div className="editor-card-listing">
-                    <form>
-                        <div className="editor-card-scaling-container">
-                            <h3 className="editor-card-labels">Uniform Scale</h3>
-                                <TextField
-                                    label="x"
-                                    id="scaleX-input"
-                                    value={this.state.scaleX}
-                                    size="small"
-                                    type="number"
-                                    onChange = {
-                                        setScaleX
-                                    }
-                                    InputProps={{ inputProps: { min: 0, max: 10 } }}
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                                <TextField
-                                    label="y"
-                                    id="scaleY-input"
-                                    size="small"
-                                    value={this.state.scaleX}
-                                    disabled={true}
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                                <TextField
-                                    label="z"
-                                    id="scaleZ-input"
-                                    size="small"
-                                    value={this.state.scaleX}
-                                    disabled={true}
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                        </div>
-
-
-                        <div className="editor-card-scaling-container">
-                            <h3 className="editor-card-labels">Translation</h3>
-                                <TextField
-                                    label="x"
-                                    id="transalateZ-input"
-                                    value={this.state.translationZ}
-                                    size="small"
-                                    type="number"
-                                    onChange = {
-                                        setTranslateZ
-                                    }
-                                    InputProps={{ inputProps: { min: -10, max: 10 } }}
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                                <TextField
-                                    label="y"
-                                    id="transalateY-input"
-                                    size="small"
-                                    value="0"
-                                    disabled={true}
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                                <TextField
-                                    label="z"
-                                    id="transalateX-input"
-                                    size="small"
-                                    value={this.state.translationX}
-                                    InputProps={{ inputProps: { min: -10, max: 10 } }}
-                                    type="number"
-                                    onChange = {
-                                        setTranslateX
-                                    }
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                        </div>
-
-
-                        <div className="editor-card-scaling-container">
-                            <h3 className="editor-card-labels">Rotation</h3>
-                                <TextField
-                                    label="x"
-                                    id="rotationX-input"
-                                    value="0"
-                                    size="small"
-                                    type="number"
-                                    disabled={true}
-                                    InputProps={{ inputProps: { min: 0, max: 10 } }}
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                                <TextField
-                                    label="y"
-                                    id="rotationY-input"
-                                    size="small"
-                                    value={this.state.rotationY}
-                                    type="number"
-                                    InputProps={{ inputProps: { min: 0, max: 360 } }}
-                                    onChange={
-                                        setRotationY
-                                    }
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                                <TextField
-                                    label="z"
-                                    id="rotationZ-input"
-                                    size="small"
-                                    value="0"
-                                    disabled={true}
-                                    sx={{
-                                        margin: '0px 4px',
-                                        width: '30%'
-                                    }}
-                                    required
-                                />
-                        </div>
-
-                        <SyncButton 
-                            onClick={this.saveTransformationToDB}
-                            variant="contained" 
-                            disableRipple
-                        >Sync</SyncButton>
-                    </form>
-                </div>
-
-
-                <div class="shareablelink-div">
-                    <TextField
-                        label="Copy shareable Link"
-                        id="shareable-link-input"
-                        size="small"
-                        value={"https://open-ifc-bnb.vercel.app/onlyviewer/"+this.state.fileId}
-                        sx={{
-                            margin: '0px 4px',
-                            width: '100%'
-                        }}
-                    />
                 </div>
             </>
         )
@@ -585,7 +389,7 @@ const SyncButton = styled(Button)({
 
 
 
-function Mview(){
+function OnlyViewer(){
     const { id } = useParams();
     console.log(id);
 
@@ -605,24 +409,13 @@ function Mview(){
         return(
             <>
                 <LocalView fileId={fileId}></LocalView>
-                <BackButton 
-                    variant="contained" 
-                    disableRipple 
-                    className='navigate-to-home-button'
-                    onClick={navigateToHome}  
-                >Back to Listings</BackButton>
             </>
         )
     }
 }
 
 
-export default Mview
-
-
-// export async function getStaticProps(context) {
-//     console.log(context);
-// }
+export default OnlyViewer
 
 
 
