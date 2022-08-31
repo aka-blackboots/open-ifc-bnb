@@ -174,7 +174,7 @@ const Uploadt = () => {
                         sx={{
                             marginRight: "20px"
                         }}
-                        InputProps={{ inputProps: { step:"0.1" } }}
+                        InputProps={{ inputProps: { step:"0.0001" } }}
                     />
                     <CaptionTextField 
                         id="longitude" 
@@ -182,7 +182,7 @@ const Uploadt = () => {
                         type="number"
                         label="Longitude" 
                         variant="outlined"
-                        InputProps={{ inputProps: { step:"0.1" } }}
+                        InputProps={{ inputProps: { step:"0.0001" } }}
                         required
                     />
 

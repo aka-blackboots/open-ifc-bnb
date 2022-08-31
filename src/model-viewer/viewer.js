@@ -347,7 +347,7 @@ class LocalView extends Component{
             redirect: 'follow'
         };
         
-        fetch("http://localhost:9000/updateTransformation", requestOptions)
+        fetch("https://mongo-3d.herokuapp.com/updateTransformation", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
