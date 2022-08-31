@@ -17,6 +17,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "three-mesh-bvh": "^0.5.15",
+    "threebox-plugin": "^2.2.7",
     "web-ifc-viewer": "^1.0.210",
     "web-vitals": "^2.1.4",
     "worker-loader": "^3.0.8"

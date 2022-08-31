@@ -83,3 +83,38 @@ html, body {
     height: 60%;
 }
 
+
+
+
+
+
+/* Editor */
+.editor-card-listing{
+    padding: 16px;
+    background: #FFF;
+    height: fit-content;
+    right: 20px;
+    top: 20px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    position: absolute;
+    width: 20%;
+}
+.editor-card-labels{
+    margin-bottom: 12px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #484848;
+}
+.editor-card-scaling-container{
+    margin: 14px 0px;
+}
+
+
+
+
+
+
+
+

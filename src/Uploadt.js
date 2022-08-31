@@ -167,20 +167,22 @@ const Uploadt = () => {
                     <CaptionTextField 
                         id="latitude" 
                         name="latitude"
-                        type="text"
+                        type="number"
                         label="Latitude" 
                         variant="outlined"
                         required
                         sx={{
                             marginRight: "20px"
                         }}
+                        InputProps={{ inputProps: { step:"0.1" } }}
                     />
                     <CaptionTextField 
                         id="longitude" 
                         name="longitude"
-                        type="text"
+                        type="number"
                         label="Longitude" 
                         variant="outlined"
+                        InputProps={{ inputProps: { step:"0.1" } }}
                         required
                     />
 

@@ -2,31 +2,36 @@ import { Component, createRef } from "react";
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import styled from '@emotion/styled';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { Matrix4, Vector3,
     DirectionalLight, AmbientLight,
     PerspectiveCamera,
     Scene, WebGLRenderer,
     BoxHelper
   } from "three";
+
+import { TransformControls } from "three/examples/jsm/controls/TransformControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
 import { IFCLoader } from "web-ifc-three/IFCLoader"; 
 
 import { CSS2DObject, CSS2DRenderer } from "three/examples/jsm/renderers/CSS2DRenderer"
 
 import mapboxgl from 'mapbox-gl'; 
 
-import moment from "moment";
+import moment, { max } from "moment";
 import { useNavigate } from 'react-router-dom';
 import './viewer.css';
+import { height } from "@mui/system";
 
 let i = 0;
 
 
 const BackButton = styled(Button)({
-    backgroundColor: '#FF5A5F',
+    backgroundColor: '#484848',
     boxShadow: 'none',
     '&:hover':{
-      backgroundColor: '#FF5A5F',
+      backgroundColor: '#484848',
       boxShadow: '-1px 0px 40px -15px rgba(0,0,0,0.75)',
     },
     position: 'fixed',
@@ -56,8 +61,20 @@ class LocalView extends Component{
             personName: "",
             caption: "",
             location: "",
-            addedDate: ""
+            addedDate: "",
+            scaleX: 1,
+            scaleY: 1,
+            scaleZ: 1,
+            rotationX: 1,
+            rotationY: 1,
+            rotationZ: 1,
+            translationX: 0,
+            translationY: 0,
+            translationZ: 0,
         }
+
+
+        this.saveTransformationToDB = this.saveTransformationToDB.bind(this);
 
     }
 
@@ -72,12 +89,25 @@ class LocalView extends Component{
 
         console.log("Getting File");
         const fileData = await this.getFileDataUsingAPI();
+        //console.log(fileData);
+
         const latitude = fileData.latitude;
         const longitude = fileData.longitude;
         const caption = fileData.caption;
         const personName = fileData.personName;
         const addedDate = fileData.addedDate;
         const location = fileData.location;
+        const transalateX = fileData.transalateX;
+        const transalateY = fileData.transalateY;
+        const transalateZ = fileData.transalateZ;
+        const rotationX = fileData.rotationX;
+        const rotationY = fileData.rotationY;
+        const rotationZ = fileData.rotationZ;
+        const scaleX = fileData.scaleX;
+        const scaleY = fileData.scaleY;
+        const scaleZ = fileData.scaleZ;
+
+        //const translateX = 3;
         
         this.setState({
             longitude: longitude,
@@ -85,13 +115,24 @@ class LocalView extends Component{
             caption: caption,
             location: location,
             personName: personName,
-            addedDate: addedDate
-        })
+            addedDate: addedDate,
+            scaleX: scaleX,
+            scaleY: scaleY,
+            scaleZ: scaleZ,
+            rotationX: rotationX,
+            rotationY: rotationY,
+            rotationZ: rotationZ,
+            translationX: transalateX,
+            translationY: transalateY,
+            translationZ: transalateZ,
+        });
+
+        console.log(this.state);
         
         const fileURL = fileData.fileURL;
         const fileType = fileData.fileURL.split( '.' ).pop().toLowerCase();
 
-        console.log(fileType);
+        //console.log(fileType);
 
         
         i++;
@@ -138,13 +179,14 @@ class LocalView extends Component{
         //const labelRenderer = new CSS2DRenderer();
         //labelRenderer.domElement = renderer.domElement;
             
-
+        const self = this;
 
         const customLayer = {
 
             id: '3d-model',
             type: 'custom',
             renderingMode: '3d',
+
           
             onAdd: () => {
                 const ifcLoader = new IFCLoader();
@@ -156,10 +198,6 @@ class LocalView extends Component{
                         ifcLoader.load( fileURL , ( model ) => {
                             scene.add( model );
                             this.mainIFCModel = model;
-
-                            // const box = new BoxHelper( model, 0xffff00 );
-                            // this.scene.add( box );
-
                         });
                         break;
                     default:
@@ -176,26 +214,35 @@ class LocalView extends Component{
                 scene.add(directionalLight, directionalLight2, ambientLight);
             },
           
-            render: function (gl, matrix) {
+            render: function(gl, matrix){
+                //console.log(self.state.translationX);
+
+                const translateX = modelTransform.translateX + parseFloat(self.state.translationX/10000000);
+                const translateZ = modelTransform.translateY + parseFloat(self.state.translationZ/10000000);
+
+                const rotateX = modelTransform.rotateY + degrees_to_radians(self.state.rotationY);
+
+                //console.log(translateX);
+
                 const rotationX = new Matrix4().makeRotationAxis(
                 new Vector3(1, 0, 0), modelTransform.rotateX);
                 const rotationY = new Matrix4().makeRotationAxis(
-                new Vector3(0, 1, 0), modelTransform.rotateY);
+                new Vector3(0, 1, 0), rotateX);
                 const rotationZ = new Matrix4().makeRotationAxis(
                 new Vector3(0, 0, 1), modelTransform.rotateZ);
                 
                 const m = new Matrix4().fromArray(matrix);
                 const l = new Matrix4()
                 .makeTranslation(
-                modelTransform.translateX,
-                modelTransform.translateY,
+                translateX,
+                translateZ,
                 modelTransform.translateZ
                 )
                 .scale(
                 new Vector3(
-                modelTransform.scale,
-                -modelTransform.scale,
-                modelTransform.scale)
+                modelTransform.scale * self.state.scaleX,
+                -modelTransform.scale * self.state.scaleX,
+                modelTransform.scale * self.state.scaleX)
                 )
                 .multiply(rotationX)
                 .multiply(rotationY)
@@ -253,7 +300,16 @@ class LocalView extends Component{
                     personName : response.data.files[0].personName,
                     caption : response.data.files[0].caption,
                     addedDate: response.data.files[0].createdAt,
-                    location: response.data.files[0].location
+                    location: response.data.files[0].location,
+                    transalateX: response.data.files[0].translateX,
+                    transalateY: response.data.files[0].translateY,
+                    transalateZ: response.data.files[0].translateZ,
+                    rotationX: response.data.files[0].rotationX,
+                    rotationY: response.data.files[0].rotationY,
+                    rotationZ: response.data.files[0].rotationZ,
+                    scaleX: response.data.files[0].scaleX,
+                    scaleY: response.data.files[0].scaleY,
+                    scaleZ: response.data.files[0].scaleZ,
                 });
             })
             .catch(function (error) {
@@ -263,10 +319,70 @@ class LocalView extends Component{
 
     }
 
-    
+    saveTransformationToDB(event){
+        console.log(this.state);
 
-  
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "translateX": this.state.translationX,
+            "translateY": this.state.translationY,
+            "translateZ": this.state.translationZ,
+            "rotationX": this.state.rotationX,
+            "rotationY": this.state.rotationY,
+            "rotationZ": this.state.rotationZ,
+            "scaleX": this.state.scaleX,
+            "scaleY": this.state.scaleY,
+            "scaleZ": this.state.scaleZ,
+            "id": this.state.fileId
+        });
+
+        
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+        
+        fetch("http://localhost:9000/updateTransformation", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+
+    }
+
+    
     render(){
+        const setScaleX = (event) => {
+            this.setState({
+                scaleX: event.target.value
+            });
+            document.getElementById("scaleY-input").value = event.target.value;
+            document.getElementById("scaleZ-input").value = event.target.value;
+        }
+
+        const setTranslateX = (event) => {
+            this.setState({
+                translationX: event.target.value
+            });
+            document.getElementById("transalateX-input").value = event.target.value;
+        }
+        const setTranslateZ = (event) => {
+            this.setState({
+                translationZ: event.target.value
+            });
+            document.getElementById("transalateZ-input").value = event.target.value;
+        }
+        const setRotationY = (event) => {
+            this.setState({
+                rotationY: event.target.value
+            });
+            document.getElementById("rotationY-input").value = event.target.value;
+        }
+
         return (
             <>
                 <div id="viewer-container"></div>
@@ -281,11 +397,177 @@ class LocalView extends Component{
                         <h3 className="viewer-card-listing-person-name">by {this.state.personName}</h3>
                     </div>
                 </div>
+
+
+                <div className="editor-card-listing">
+                    <form>
+                        <div className="editor-card-scaling-container">
+                            <h3 className="editor-card-labels">Uniform Scale</h3>
+                                <TextField
+                                    label="x"
+                                    id="scaleX-input"
+                                    value={this.state.scaleX}
+                                    size="small"
+                                    type="number"
+                                    onChange = {
+                                        setScaleX
+                                    }
+                                    InputProps={{ inputProps: { min: 0, max: 10 } }}
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                                <TextField
+                                    label="y"
+                                    id="scaleY-input"
+                                    size="small"
+                                    value={this.state.scaleX}
+                                    disabled={true}
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                                <TextField
+                                    label="z"
+                                    id="scaleZ-input"
+                                    size="small"
+                                    value={this.state.scaleX}
+                                    disabled={true}
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                        </div>
+
+
+                        <div className="editor-card-scaling-container">
+                            <h3 className="editor-card-labels">Translation</h3>
+                                <TextField
+                                    label="x"
+                                    id="transalateZ-input"
+                                    value={this.state.translationZ}
+                                    size="small"
+                                    type="number"
+                                    onChange = {
+                                        setTranslateZ
+                                    }
+                                    InputProps={{ inputProps: { min: -10, max: 10 } }}
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                                <TextField
+                                    label="y"
+                                    id="transalateY-input"
+                                    size="small"
+                                    value="0"
+                                    disabled={true}
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                                <TextField
+                                    label="z"
+                                    id="transalateX-input"
+                                    size="small"
+                                    value={this.state.translationX}
+                                    InputProps={{ inputProps: { min: -10, max: 10 } }}
+                                    type="number"
+                                    onChange = {
+                                        setTranslateX
+                                    }
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                        </div>
+
+
+                        <div className="editor-card-scaling-container">
+                            <h3 className="editor-card-labels">Rotation</h3>
+                                <TextField
+                                    label="x"
+                                    id="rotationX-input"
+                                    value="0"
+                                    size="small"
+                                    type="number"
+                                    disabled={true}
+                                    InputProps={{ inputProps: { min: 0, max: 10 } }}
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                                <TextField
+                                    label="y"
+                                    id="rotationY-input"
+                                    size="small"
+                                    value={this.state.rotationY}
+                                    type="number"
+                                    InputProps={{ inputProps: { min: 0, max: 360 } }}
+                                    onChange={
+                                        setRotationY
+                                    }
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                                <TextField
+                                    label="z"
+                                    id="rotationZ-input"
+                                    size="small"
+                                    value="0"
+                                    disabled={true}
+                                    sx={{
+                                        margin: '0px 4px',
+                                        width: '30%'
+                                    }}
+                                    required
+                                />
+                        </div>
+
+                        <SyncButton 
+                            onClick={this.saveTransformationToDB}
+                            variant="contained" 
+                            disableRipple
+                        >Sync</SyncButton>
+                    </form>
+                </div>
             </>
         )
     }
 }
 
+
+const SyncButton = styled(Button)({
+    backgroundColor: '#FF5A5F',
+    boxShadow: 'none',
+    '&:hover':{
+      backgroundColor: '#FF5A5F',
+      boxShadow: '-1px 0px 40px -15px rgba(0,0,0,0.75)',
+    },
+    fontSize: '0.95rem',
+    padding: '12px 24px',
+    width: '100%',
+    borderRadius: '16px',
+    fontWeight: '600',
+    letterSpacing: '1.1px'
+})
 
 
 
@@ -329,3 +611,10 @@ export default Mview
 //     console.log(context);
 // }
 
+
+
+function degrees_to_radians(degrees)
+{
+  var pi = Math.PI;
+  return degrees * (pi/180);
+}
