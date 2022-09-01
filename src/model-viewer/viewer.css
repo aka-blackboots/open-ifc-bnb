@@ -44,6 +44,17 @@ html, body {
     position: absolute;
     width: 25%;
 }
+.viewer-card-listing-header-onlyviewer{
+    padding: 8px;
+    background: #FFF;
+    height: fit-content;
+    left: 20px;
+    bottom: 20px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    position: absolute;
+    width: 35%;
+}
 .viewer-card-listing-caption{
     font-size: 1.8rem;
     color: #00A699;
@@ -139,4 +150,62 @@ html, body {
 }
 
 
+
+
+/* Media Queries : Laptop */
+@media only screen and (max-width: 1024px) {
+    .viewer-card-listing-header {
+      padding: 6px;
+      width: 35%;
+    }
+    .viewer-card-listing-caption {
+        font-size: 1.3rem;
+        margin: 0px 4px;
+    }
+    .viewer-card-listing-location {
+        font-size: 0.97rem;
+    }
+    .viewer-card-listing-added-date {
+        font-size: 0.92rem;
+        margin: 3px 4px;
+    }
+    .viewer-card-listing-person-name {
+        font-size: 0.8rem;
+        margin-top: 8px;
+    }
+
+    .shareablelink-div {
+        padding: 12px;
+        width: 50%;
+    }
+
+    .editor-card-listing {
+        padding: 8px;
+        width: 35%;
+    }
+
+    .editor-card-labels {
+        margin-bottom: 8px;
+        text-align: center;
+        font-size: 0.87rem;
+    }
+  }
+
+
+
+/* Media Queries : Tab */
+@media only screen and (max-width: 768px) {
+    .viewer-card-listing-header-onlyviewer{
+        width: 50%;
+    }
+}
+/* Media Queries : Phone */
+@media only screen and (max-width: 768px) {
+    .viewer-card-listing-header-onlyviewer{
+        width: 80%;
+    }
+    body{
+        overflow-x: hidden;
+    }
+}
 

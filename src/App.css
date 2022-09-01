@@ -152,3 +152,41 @@ body{
 
 
 
+/* Media Queries */
+@media only screen and (max-width: 768px) {
+  .main-container {
+    padding: 2rem;
+  }
+  .main-header-title {
+    font-size: 2.9rem;
+    margin: 0px 20px;
+  }
+  .main-header-subtitle {
+    font-size: 1.5rem;
+    margin: 0px 20px;
+  }
+  .listing-card {
+    margin: 0.95rem;
+    width: 45%;
+    padding: 8px;
+  }
+
+  .listing-card-ppname {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 3px;
+  }
+
+  .listing-card-location {
+    font-size: 0.75rem;
+  }
+  .listing-card-pname, .listing-card-date{
+    font-size: 0.9rem;
+  }
+}
+
+
+
+
+
+

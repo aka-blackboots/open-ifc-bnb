@@ -360,8 +360,8 @@ class LocalView extends Component{
                 <div id="viewer-container"></div>
                 <div id="map"></div>
 
-                <div className="viewer-card-listing-main">
-                    <div className="viewer-card-listing-header">
+                <div className="viewer-card-listing-main-onlyviewer">
+                    <div className="viewer-card-listing-header-onlyviewer">
                         <h3 className="viewer-card-listing-person-name-onlyviewer">Created by {this.state.personName}</h3>
                     </div>
                 </div>

@@ -549,7 +549,7 @@ class LocalView extends Component{
                 </div>
 
 
-                <div class="shareablelink-div">
+                <div className="shareablelink-div">
                     <TextField
                         label="Copy shareable Link"
                         id="shareable-link-input"
